@@ -1,7 +1,7 @@
-import type { AppRouteModule } from '/@/router/types';
+import type { AppRouteModule } from '/@/router/types'
 
-import { LAYOUT } from '/@/router/constant';
-import { t } from '/@/hooks/web/useI18n';
+import { LAYOUT } from '/@/router/constant'
+import { t } from '/@/hooks/web/useI18n'
 
 const dashboard: AppRouteModule = {
   path: '/about',
@@ -12,7 +12,7 @@ const dashboard: AppRouteModule = {
     hideChildrenInMenu: true,
     icon: 'simple-icons:about-dot-me',
     title: t('routes.dashboard.about'),
-    orderNo: 100000,
+    sort: 100000,
   },
   children: [
     {
@@ -26,6 +26,6 @@ const dashboard: AppRouteModule = {
       },
     },
   ],
-};
+}
 
-export default dashboard;
+export default dashboard
