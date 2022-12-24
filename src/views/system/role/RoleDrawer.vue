@@ -12,10 +12,10 @@
         <BasicTree
           v-model:value="model[field]"
           :treeData="treeData"
-          :fieldNames="{ title: 'menuName', key: 'id' }"
+          :fieldNames="{ title: 'title', key: 'id' }"
           checkable
           toolbar
-          title="菜单分配"
+          title="菜单&权限分配"
         />
       </template>
     </BasicForm>
@@ -28,8 +28,7 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer'
   import { BasicTree, TreeItem } from '/@/components/Tree'
 
-  // TODO 获取权限树
-  // import { getMenuList } from '/@/api/system';
+  import { getPermissionList } from '/@/api/system'
 
   export default defineComponent({
     name: 'RoleDrawer',
@@ -49,9 +48,9 @@
         resetFields()
         setDrawerProps({ confirmLoading: false })
         // 需要在setFieldsValue之前先填充treeData，否则Tree组件可能会报key not exist警告
-        // if (unref(treeData).length === 0) {
-        //   treeData.value = (await getMenuList()) as any as TreeItem[];
-        // }
+        if (unref(treeData).length === 0) {
+          treeData.value = (await getPermissionList()) as any as TreeItem[]
+        }
         isUpdate.value = !!data?.isUpdate
 
         if (unref(isUpdate)) {

@@ -90,13 +90,13 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
-    field: 'roleName',
+    field: 'name',
     label: '角色名称',
     required: true,
     component: 'Input',
   },
   {
-    field: 'roleValue',
+    field: 'value',
     label: '角色值',
     required: true,
     component: 'Input',
@@ -105,22 +105,22 @@ export const formSchema: FormSchema[] = [
     field: 'status',
     label: '状态',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: 1,
     componentProps: {
       options: [
-        { label: '启用', value: '0' },
-        { label: '停用', value: '1' },
+        { label: '启用', value: 1 },
+        { label: '停用', value: 0 },
       ],
     },
   },
   {
-    label: '备注',
-    field: 'remark',
+    label: '描述',
+    field: 'desc',
     component: 'InputTextArea',
   },
   {
     label: ' ',
-    field: 'menu',
+    field: 'permission',
     slot: 'menu',
     component: 'Input',
   },

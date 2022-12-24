@@ -28,9 +28,9 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue'
-
   import { BasicTable, useTable, TableAction } from '/@/components/Table'
-  import { getRoleListPage } from '/@/api/system'
+
+  import { getRoleListPage, delRole } from '/@/api/system'
 
   import { useDrawer } from '/@/components/Drawer'
   import RoleDrawer from './RoleDrawer.vue'
@@ -77,7 +77,7 @@
       }
 
       function handleDelete(record: Recordable) {
-        console.log(record)
+        delRole(record.id)
       }
 
       function handleSuccess() {

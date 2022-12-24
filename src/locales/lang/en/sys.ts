@@ -5,6 +5,7 @@ export default {
     errorMessage: 'The operation failed, the system is abnormal!',
     timeoutMessage: 'Login timed out, please log in again!',
     apiTimeoutMessage: 'The interface request timed out, please refresh the page and try again!',
+    unauthorizedMessage: 'The current account does not have permission!',
     apiRequestFailed: 'The interface request failed, please try again later!',
     networkException: 'network anomaly',
     networkExceptionMsg:
@@ -101,4 +102,4 @@ export default {
     smsCode: 'SMS code',
     mobile: 'Mobile',
   },
-};
+}

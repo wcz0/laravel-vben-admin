@@ -6,6 +6,17 @@ export type RoleParams = {
   status?: number
 }
 
+export interface PermissionItem {
+  id: string
+  title: string
+  // sort: number
+  // icon: string
+  // component: string
+  // permission: string
+  // createdAt: string
+  children: PermissionItem[]
+}
+
 export type RolePageParams = BasicPageParams & RoleParams
 
 export interface RoleListItem {
