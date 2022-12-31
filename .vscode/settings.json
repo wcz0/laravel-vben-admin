@@ -1,16 +1,10 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
   "volar.tsPlugin": true,
   "volar.tsPluginStatus": false,
-  //===========================================
-  //============= Editor ======================
-  //===========================================
+  "npm.packageManager": "pnpm",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  //===========================================
-  //============= files =======================
-  //===========================================
   "files.eol": "\n",
   "search.exclude": {
     "**/node_modules": true,
@@ -61,7 +55,7 @@
     "**/yarn.lock": true
   },
   "stylelint.enable": true,
-  "stylelint.packageManager": "yarn",
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
   "path-intellisense.mappings": {
     "/@/": "${workspaceRoot}/src"
   },
@@ -94,7 +88,8 @@
   },
   "[vue]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": false
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
     }
   },
   "i18n-ally.localesPaths": ["src/locales/lang"],
@@ -137,6 +132,11 @@
     "lintstagedrc",
     "brotli",
     "tailwindcss",
-    "sider"
-  ]
+    "sider",
+    "pnpm",
+    "antd"
+  ],
+  "vetur.format.scriptInitialIndent": true,
+  "vetur.format.styleInitialIndent": true,
+  "vetur.validation.script": false
 }
