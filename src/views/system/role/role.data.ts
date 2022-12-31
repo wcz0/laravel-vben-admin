@@ -56,7 +56,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '创建时间',
-    dataIndex: 'createdAt',
+    dataIndex: 'created_at',
     width: 180,
   },
 ]
@@ -80,8 +80,8 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '启用', value: '1' },
-        { label: '停用', value: '0' },
+        { label: '启用', value: 1 },
+        { label: '停用', value: 0 },
       ],
     },
     colProps: { span: 3 },
@@ -120,7 +120,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: ' ',
-    field: 'permission',
+    field: 'permissions',
     slot: 'menu',
     component: 'Input',
   },

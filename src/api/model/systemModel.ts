@@ -7,26 +7,22 @@ export type RoleParams = {
 }
 
 export interface PermissionItem {
-  id: string
+  id: number
   title: string
-  // sort: number
-  // icon: string
-  // component: string
-  // permission: string
-  // createdAt: string
   children: PermissionItem[]
 }
 
 export type RolePageParams = BasicPageParams & RoleParams
 
 export interface RoleListItem {
-  id: string
+  id: number
   name: string
   value: string
   desc: string
   status: number
-  createdAt: string
-  updatedAt: string
+  created_at: string
+  permissions: number[]
+  // updatedAt: string
 }
 
 export type RoleListGetResultModel = BasicFetchResult<RoleListItem>
