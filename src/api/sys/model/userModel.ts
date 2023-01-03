@@ -2,37 +2,37 @@
  * @description: Login interface parameters
  */
 export interface LoginParams {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }
 
 export interface RoleInfo {
-  name: string;
-  value: string;
+  name: string
+  value: string
 }
 
 /**
  * @description: Login interface return value
  */
 export interface LoginResultModel {
-  id: string | number;
-  token: string;
-  role: RoleInfo;
+  id: string | number
+  token: string
+  role: RoleInfo
 }
 
 /**
  * @description: Get user information return value
  */
 export interface GetUserInfoModel {
-  roles: RoleInfo[];
+  roles: RoleInfo[]
   // 用户id
-  id: string | number;
+  id: string | number
   // 用户名
-  username: string;
+  username: string
   // 真实名字
-  name: string;
+  name: string
   // 头像
-  avatar: string;
+  avatar: string
   // 介绍
-  desc?: string;
+  // desc?: string;
 }

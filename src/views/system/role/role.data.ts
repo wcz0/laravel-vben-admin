@@ -37,7 +37,7 @@ export const columns: BasicColumn[] = [
         loading: record.pendingStatus,
         onChange(checked: boolean) {
           record.pendingStatus = true
-          const newStatus = checked ? 0 : 1
+          const newStatus = checked ? 1 : 0
           const { createMessage } = useMessage()
           setRoleStatus(record.id, newStatus)
             .then(() => {
@@ -89,6 +89,12 @@ export const searchFormSchema: FormSchema[] = [
 ]
 
 export const formSchema: FormSchema[] = [
+  {
+    field: 'id',
+    label: 'Id',
+    component: 'Input',
+    show: false,
+  },
   {
     field: 'name',
     label: '角色名称',

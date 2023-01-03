@@ -12,66 +12,76 @@
         <BasicTree
           v-model:value="model[field]"
           :treeData="treeData"
-          :fieldNames="{ title: 'title', key: 'id' }"
+          :fieldNames="{ key: 'id' }"
           checkable
           toolbar
-          title="菜单分配"
+          title="权限&菜单分配"
         />
       </template>
     </BasicForm>
   </BasicDrawer>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, computed, unref } from 'vue';
-  import { BasicForm, useForm } from '/@/components/Form/index';
-  import { formSchema } from './role.data';
-  import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { BasicTree, TreeItem } from '/@/components/Tree';
+  import { defineComponent, ref, computed, unref } from 'vue'
+  import { BasicForm, useForm } from '/@/components/Form/index'
+  import { formSchema } from './role.data'
+  import { BasicDrawer, useDrawerInner } from '/@/components/Drawer'
+  import { BasicTree, TreeItem } from '/@/components/Tree'
 
-  import { getPermissionList } from '/@/api/system';
+  import { createRole, getPermissionList, updateRole } from '/@/api/system'
+  import { useMessage } from '/@/hooks/web/useMessage'
 
   export default defineComponent({
     name: 'RoleDrawer',
     components: { BasicDrawer, BasicForm, BasicTree },
     emits: ['success', 'register'],
     setup(_, { emit }) {
-      const isUpdate = ref(true);
-      const treeData = ref<TreeItem[]>([]);
+      const isUpdate = ref(true)
+      const treeData = ref<TreeItem[]>([])
 
       const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
         labelWidth: 90,
+        baseColProps: { span: 24 },
         schemas: formSchema,
         showActionButtonGroup: false,
-      });
+      })
 
       const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
-        resetFields();
-        setDrawerProps({ confirmLoading: false });
+        resetFields()
+        setDrawerProps({ confirmLoading: false })
         // 需要在setFieldsValue之前先填充treeData，否则Tree组件可能会报key not exist警告
         if (unref(treeData).length === 0) {
-          treeData.value = (await getPermissionList()) as any as TreeItem[];
+          treeData.value = (await getPermissionList()) as any as TreeItem[]
         }
-        isUpdate.value = !!data?.isUpdate;
+        isUpdate.value = !!data?.isUpdate
 
         if (unref(isUpdate)) {
           setFieldsValue({
             ...data.record,
-          });
+          })
         }
-      });
+      })
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增角色' : '编辑角色'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增角色' : '编辑角色'))
 
       async function handleSubmit() {
         try {
-          const values = await validate();
-          setDrawerProps({ confirmLoading: true });
-          // TODO custom api
-          console.log(values);
-          closeDrawer();
-          emit('success');
+          const values = await validate()
+          setDrawerProps({ confirmLoading: true })
+          const { createMessage } = useMessage()
+          if (unref(isUpdate)) {
+            updateRole(values).then(() => {
+              createMessage.success('更新成功')
+            })
+          } else {
+            createRole(values).then(() => {
+              createMessage.success('创建成功')
+            })
+          }
+          closeDrawer()
+          emit('success')
         } finally {
-          setDrawerProps({ confirmLoading: false });
+          setDrawerProps({ confirmLoading: false })
         }
       }
 
@@ -81,7 +91,7 @@
         getTitle,
         handleSubmit,
         treeData,
-      };
+      }
     },
-  });
+  })
 </script>

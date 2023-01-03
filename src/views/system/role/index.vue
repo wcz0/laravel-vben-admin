@@ -36,6 +36,7 @@
   import RoleDrawer from './RoleDrawer.vue'
 
   import { columns, searchFormSchema } from './role.data'
+  import { useMessage } from '/@/hooks/web/useMessage'
 
   export default defineComponent({
     name: 'RoleManagement',
@@ -75,9 +76,12 @@
           isUpdate: true,
         })
       }
-
+      const { createMessage } = useMessage()
       function handleDelete(record: Recordable) {
-        delRole(record.id)
+        delRole(record.id).then(() => {
+          createMessage.success('删除成功')
+          reload()
+        })
       }
 
       function handleSuccess() {
