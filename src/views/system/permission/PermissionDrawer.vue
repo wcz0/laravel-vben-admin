@@ -13,7 +13,7 @@
 <script lang="ts">
   import { defineComponent, ref, computed, unref } from 'vue'
   import { BasicForm, useForm } from '/@/components/Form/index'
-  import { formSchema } from './menu.data'
+  import { formSchema } from './permission.data'
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer'
 
   import { getMenuList } from '/@/api/demo/system'
@@ -36,7 +36,6 @@
         resetFields()
         setDrawerProps({ confirmLoading: false })
         isUpdate.value = !!data?.isUpdate
-
         if (unref(isUpdate)) {
           setFieldsValue({
             ...data.record,
@@ -49,7 +48,7 @@
         })
       })
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'))
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增权限' : '编辑权限'))
 
       async function handleSubmit() {
         try {
