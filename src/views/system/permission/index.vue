@@ -30,12 +30,13 @@
   import { defineComponent, nextTick } from 'vue'
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table'
-  import { getPermissionListPage } from '/@/api/system'
+  import { delPermission, getPermissionList } from '/@/api/system/permission'
 
   import { useDrawer } from '/@/components/Drawer'
   import MenuDrawer from './PermissionDrawer.vue'
 
   import { columns, searchFormSchema } from './permission.data'
+  import { useMessage } from '/@/hooks/web/useMessage'
 
   export default defineComponent({
     name: 'MenuManagement',
@@ -43,8 +44,8 @@
     setup() {
       const [registerDrawer, { openDrawer }] = useDrawer()
       const [registerTable, { reload, expandAll }] = useTable({
-        title: '菜单列表',
-        api: getPermissionListPage,
+        title: '权限列表',
+        api: getPermissionList,
         columns,
         formConfig: {
           labelWidth: 120,
@@ -80,8 +81,12 @@
         })
       }
 
+      const { createMessage } = useMessage()
       function handleDelete(record: Recordable) {
-        console.log(record)
+        delPermission(record.id).then(() => {
+          createMessage.success('删除成功')
+          reload()
+        })
       }
 
       function handleSuccess() {

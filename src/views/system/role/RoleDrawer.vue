@@ -27,9 +27,10 @@
   import { formSchema } from './role.data'
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer'
   import { BasicTree, TreeItem } from '/@/components/Tree'
-
-  import { createRole, getPermissionList, updateRole } from '/@/api/system'
   import { useMessage } from '/@/hooks/web/useMessage'
+
+  import { createRole, updateRole } from '/@/api/system/role'
+  import { getPermissionTree } from '/@/api/system/permission'
 
   export default defineComponent({
     name: 'RoleDrawer',
@@ -51,7 +52,7 @@
         setDrawerProps({ confirmLoading: false })
         // 需要在setFieldsValue之前先填充treeData，否则Tree组件可能会报key not exist警告
         if (unref(treeData).length === 0) {
-          treeData.value = (await getPermissionList()) as any as TreeItem[]
+          treeData.value = (await getPermissionTree()) as any as TreeItem[]
         }
         isUpdate.value = !!data?.isUpdate
 

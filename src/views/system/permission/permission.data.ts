@@ -6,8 +6,8 @@ import { Icon } from '/@/components/Icon'
 
 export const columns: BasicColumn[] = [
   {
-    title: '菜单名称',
-    dataIndex: 'menuName',
+    title: '权限名称',
+    dataIndex: 'title',
     width: 200,
     align: 'left',
   },
@@ -20,7 +20,7 @@ export const columns: BasicColumn[] = [
     },
   },
   {
-    title: '权限标识',
+    title: '权限',
     dataIndex: 'permission',
     width: 180,
   },
@@ -29,8 +29,19 @@ export const columns: BasicColumn[] = [
     dataIndex: 'component',
   },
   {
+    title: '类型',
+    dataIndex: 'type',
+    width: 80,
+    customRender: ({ record }) => {
+      const type = ~~record.type === 0
+      const text = type ? '菜单' : '按钮'
+      const color = type ? 'blue' : '#108ee9'
+      return h(Tag, { color: color }, () => text)
+    },
+  },
+  {
     title: '排序',
-    dataIndex: 'orderNo',
+    dataIndex: 'sort',
     width: 50,
   },
   {
@@ -39,7 +50,7 @@ export const columns: BasicColumn[] = [
     width: 80,
     customRender: ({ record }) => {
       const status = record.status
-      const enable = ~~status === 0
+      const enable = ~~status === 1
       const color = enable ? 'green' : 'red'
       const text = enable ? '启用' : '停用'
       return h(Tag, { color: color }, () => text)
@@ -47,19 +58,17 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '创建时间',
-    dataIndex: 'createTime',
+    dataIndex: 'created_at',
     width: 180,
   },
 ]
 
-const isDir = (type: string) => type === '0'
-const isMenu = (type: string) => type === '1'
-const isButton = (type: string) => type === '2'
+const isButton = (type: number) => type === 1
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'menuName',
-    label: '菜单名称',
+    field: 'title',
+    label: '权限名称',
     component: 'Input',
     colProps: { span: 8 },
   },
@@ -79,124 +88,149 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
-    field: 'type',
-    label: '菜单类型',
-    component: 'RadioButtonGroup',
-    defaultValue: '0',
-    componentProps: {
-      options: [
-        { label: '目录', value: '0' },
-        { label: '菜单', value: '1' },
-        { label: '按钮', value: '2' },
-      ],
-    },
-    colProps: { lg: 24, md: 24 },
-  },
-  {
-    field: 'menuName',
-    label: '菜单名称',
+    field: 'id',
+    label: 'id',
     component: 'Input',
-    required: true,
+    show: false,
   },
-
   {
-    field: 'parentMenu',
+    field: 'parent_id',
     label: '上级菜单',
     component: 'TreeSelect',
     componentProps: {
       fieldNames: {
-        label: 'menuName',
+        label: 'title',
         key: 'id',
         value: 'id',
       },
       getPopupContainer: () => document.body,
     },
   },
-
   {
-    field: 'orderNo',
-    label: '排序',
-    component: 'InputNumber',
-    required: true,
-  },
-  {
-    field: 'icon',
-    label: '图标',
-    component: 'IconPicker',
-    required: true,
-    ifShow: ({ values }) => !isButton(values.type),
-  },
-
-  {
-    field: 'routePath',
-    label: '路由地址',
-    component: 'Input',
-    required: true,
-    ifShow: ({ values }) => !isButton(values.type),
-  },
-  {
-    field: 'component',
-    label: '组件路径',
-    component: 'Input',
-    ifShow: ({ values }) => isMenu(values.type),
-  },
-  {
-    field: 'permission',
-    label: '权限标识',
-    component: 'Input',
-    ifShow: ({ values }) => !isDir(values.type),
+    field: 'type',
+    label: '权限类型',
+    component: 'RadioButtonGroup',
+    defaultValue: 0,
+    componentProps: {
+      options: [
+        // { label: '目录', value: '0' },
+        { label: '菜单', value: 0 },
+        { label: '按钮', value: 1 },
+      ],
+    },
+    colProps: { lg: 24, md: 24 },
   },
   {
     field: 'status',
     label: '状态',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: 1,
     componentProps: {
       options: [
-        { label: '启用', value: '0' },
-        { label: '禁用', value: '1' },
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 },
       ],
     },
   },
   {
-    field: 'isExt',
-    label: '是否外链',
+    field: 'affix',
+    label: '固定标签',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: 0,
     componentProps: {
       options: [
-        { label: '否', value: '0' },
-        { label: '是', value: '1' },
+        { label: '是', value: 1 },
+        { label: '否', value: 0 },
       ],
     },
+  },
+  {
+    field: 'title',
+    label: '权限标题',
+    component: 'Input',
+    required: true,
+  },
+  {
+    field: 'permission',
+    label: '权限标识',
+    component: 'Input',
+    required: true,
+  },
+  {
+    field: 'name',
+    label: '权限名',
+    component: 'Input',
+    // required: true,
+  },
+  {
+    field: 'sort',
+    label: '排序',
+    component: 'InputNumber',
+  },
+  {
+    field: 'redirect',
+    label: '重定向',
+    component: 'Input',
     ifShow: ({ values }) => !isButton(values.type),
   },
-
   {
-    field: 'keepalive',
-    label: '是否缓存',
-    component: 'RadioButtonGroup',
-    defaultValue: '0',
-    componentProps: {
-      options: [
-        { label: '否', value: '0' },
-        { label: '是', value: '1' },
-      ],
-    },
-    ifShow: ({ values }) => isMenu(values.type),
-  },
-
-  {
-    field: 'show',
-    label: '是否显示',
-    component: 'RadioButtonGroup',
-    defaultValue: '0',
-    componentProps: {
-      options: [
-        { label: '是', value: '0' },
-        { label: '否', value: '1' },
-      ],
-    },
+    field: 'path',
+    label: '路由地址',
+    component: 'Input',
     ifShow: ({ values }) => !isButton(values.type),
   },
+  {
+    field: 'component',
+    label: '组件',
+    component: 'Input',
+    required: true,
+    ifShow: ({ values }) => !isButton(values.type),
+  },
+  {
+    field: 'icon',
+    label: '图标',
+    component: 'IconPicker',
+    ifShow: ({ values }) => !isButton(values.type),
+  },
+  // {
+  //   field: 'isExt',
+  //   label: '是否外链',
+  //   component: 'RadioButtonGroup',
+  //   defaultValue: '0',
+  //   componentProps: {
+  //     options: [
+  //       { label: '否', value: '0' },
+  //       { label: '是', value: '1' },
+  //     ],
+  //   },
+  //   ifShow: ({ values }) => !isButton(values.type),
+  // },
+
+  // {
+  //   field: 'keepalive',
+  //   label: '是否缓存',
+  //   component: 'RadioButtonGroup',
+  //   defaultValue: '0',
+  //   componentProps: {
+  //     options: [
+  //       { label: '否', value: '0' },
+  //       { label: '是', value: '1' },
+  //     ],
+  //   },
+  //   ifShow: ({ values }) => isMenu(values.type),
+  // },
+
+  // {
+  //   field: 'show',
+  //   label: '是否显示',
+  //   component: 'RadioButtonGroup',
+  //   defaultValue: '0',
+  //   componentProps: {
+  //     options: [
+  //       { label: '是', value: '0' },
+  //       { label: '否', value: '1' },
+  //     ],
+  //   },
+  //   ifShow: ({ values }) => !isButton(values.type),
+  // },
 ]

@@ -3,7 +3,7 @@ import { FormSchema } from '/@/components/Table'
 import { h } from 'vue'
 import { Switch } from 'ant-design-vue'
 
-import { setRoleStatus } from '/@/api/system'
+import { setRoleStatus } from '../../../api/system/role'
 
 import { useMessage } from '/@/hooks/web/useMessage'
 
