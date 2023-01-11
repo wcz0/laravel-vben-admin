@@ -16,10 +16,11 @@
   import { formSchema } from './permission.data'
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer'
 
-  import { getMenuList } from '/@/api/demo/system'
+  import { createPermission, getPermissionTree, updatePermission } from '/@/api/system/permission'
+  import { useMessage } from '/@/hooks/web/useMessage'
 
   export default defineComponent({
-    name: 'MenuDrawer',
+    name: 'PermissionDrawer',
     components: { BasicDrawer, BasicForm },
     emits: ['success', 'register'],
     setup(_, { emit }) {
@@ -41,9 +42,9 @@
             ...data.record,
           })
         }
-        const treeData = await getMenuList()
+        const treeData = await getPermissionTree()
         updateSchema({
-          field: 'parentMenu',
+          field: 'parent_id',
           componentProps: { treeData },
         })
       })
@@ -54,8 +55,16 @@
         try {
           const values = await validate()
           setDrawerProps({ confirmLoading: true })
-          // TODO custom api
-          console.log(values)
+          const { createMessage } = useMessage()
+          if (unref(isUpdate)) {
+            await updatePermission(values).then(() => {
+              createMessage.success('更新成功')
+            })
+          } else {
+            await createPermission(values).then(() => {
+              createMessage.success('创建成功')
+            })
+          }
           closeDrawer()
           emit('success')
         } finally {
